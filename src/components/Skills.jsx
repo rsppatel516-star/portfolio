@@ -104,8 +104,8 @@ const FilterButton = ({ cat, activeTab, setActiveTab, icon }) => {
         ref={buttonRef}
         onMouseMove={handleMouseMove}
         className={`relative flex items-center gap-3 px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 border overflow-hidden group/btn cursor-pointer ${activeTab === cat
-            ? 'text-dark-bg border-dark-primary'
-            : 'bg-dark-surface border-dark-border hover:border-dark-primary/50 text-dark-textMuted'
+          ? 'text-dark-bg border-dark-primary'
+          : 'bg-dark-surface border-dark-border hover:border-dark-primary/50 text-dark-textMuted'
           }`}
       >
         {activeTab === cat && (
@@ -149,7 +149,7 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
+      ease: [0.16, 1, 0.99, 1],
     },
   },
 };

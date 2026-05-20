@@ -218,48 +218,7 @@ export default function Footer() {
             <p className="text-[13px] text-dark-textMuted leading-relaxed">
               Submit your email to connect instantly, receive custom showcases, or launch a direct portfolio inquiry.
             </p>
-            
-            <form onSubmit={handleSubscribe} className="relative group/form">
-              <div className="relative flex items-center">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your.email@domain.com"
-                  className="w-full bg-[#0a0a12]/80 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-xs text-white placeholder-white/20 focus:outline-none focus:border-dark-primary focus:ring-1 focus:ring-dark-primary/30 transition-all duration-300 backdrop-blur-md"
-                />
-                <button
-                  type="submit"
-                  disabled={isSubmitting || isSubmitted}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-white hover:bg-dark-primary hover:text-dark-bg hover:border-dark-primary flex items-center justify-center transition-all duration-300"
-                >
-                  {isSubmitting ? (
-                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : isSubmitted ? (
-                    <CheckCircle size={15} className="text-emerald-400 animate-bounce" />
-                  ) : (
-                    <Send size={13} className="group-hover/form:translate-x-0.5 group-hover/form:-translate-y-0.5 transition-transform" />
-                  )}
-                </button>
-              </div>
-              
-              {/* Dynamic Subscription Confirmation Banner */}
-              <AnimatePresence>
-                {isSubmitted && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    className="absolute left-0 right-0 top-[110%] flex items-center gap-2.5 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-2.5 px-3 rounded-lg backdrop-blur-md z-20 shadow-lg"
-                  >
-                    <ShieldCheck size={14} className="shrink-0" />
-                    <span>Connection initialized! Checking inbox...</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </form>
-            
+                       
             {/* Direct Contact Links */}
             <ul className="space-y-3 pt-4 text-dark-textMuted font-medium text-xs font-bricolage border-t border-white/5">
               <li>
@@ -345,7 +304,7 @@ export default function Footer() {
           >
             <div className="w-11 h-11 rounded-full bg-[#0a0a12]/60 border border-white/10 flex items-center justify-center text-dark-textMain group-hover:border-dark-primary group-hover:text-dark-primary transition-all duration-500 overflow-hidden relative shadow-[0_0_15px_rgba(0,0,0,0.5)]">
               {/* Sonar Ripple effect in background */}
-              <span className="absolute inset-0 bg-dark-primary/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
+              <span className="absolute inset-0 bg-dark-primary/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-1000" />
               <ArrowUp size={16} className="transition-transform relative z-10 group-hover:-translate-y-0.5" />
             </div>
             <span className="text-[8px] font-code font-bold tracking-widest uppercase opacity-40 group-hover:opacity-100 group-hover:text-dark-primary transition-all">TOP_UP</span>

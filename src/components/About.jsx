@@ -77,7 +77,7 @@ export default function About() {
             </h2>
           </div>
           <ScrollLink to="projects" smooth duration={800} className="hidden md:block">
-            <MagneticButton className="px-8 py-4 border border-dark-border rounded-2xl hover:bg-dark-primary/10 transition-colors cursor-pointer font-bricolage ">
+            <MagneticButton className="px-8 py-4 border border-dark-border rounded-2xl hover:bg-dark-primary/10 transition-colors cursor-pointer font-bricolage">
               Explore My Artifacts
             </MagneticButton>
           </ScrollLink>
@@ -116,14 +116,14 @@ export default function About() {
                 </div>
               </div>
 
-              <div className="flex gap-4 mt-8">
+              {/*<div className="flex gap-4 mt-8">
                 <a href="https://github.com/Rudraptl16" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 backdrop-blur-md rounded-xl hover:text-dark-primary transition-all border border-white/5 hover:border-dark-primary/30 group/icon">
                   <Github size={20} className="group-hover/icon:scale-110 transition-transform" />
                 </a>
                 <a href="https://www.linkedin.com/in/rudra-patel-265258313/" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 backdrop-blur-md rounded-xl hover:text-dark-secondary transition-all border border-white/5 hover:border-dark-secondary/30 group/icon">
                   <Linkedin size={20} className="group-hover/icon:scale-110 transition-transform" />
                 </a>
-              </div>
+              </div>*/}
             </div>
 
             {/* Decorative Background Logo */}

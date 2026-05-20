@@ -6,6 +6,7 @@ import Skills from '../components/Skills';
 import Projects from '../components/Projects';
 import Services from '../components/Services';
 import Experience from '../components/Experience';
+import Achievements from '../components/Achievements';
 import Contact from '../components/Contact';
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
         <section id="about" className="scroll-mt-24"><About /></section>
         <section id="skills" className="scroll-mt-24"><Skills /></section>
         <section id="experience" className="scroll-mt-24"><Experience /></section>
+        <section id="achievements" className="scroll-mt-24"><Achievements /></section>
         <section id="services" className="scroll-mt-24"><Services /></section>
         <section id="projects" className="scroll-mt-24"><Projects /></section>
         <section id="contact" className="scroll-mt-24"><Contact /></section>
@@ -34,4 +36,5 @@ export default function Home() {
     </>
   );
 }
+
 

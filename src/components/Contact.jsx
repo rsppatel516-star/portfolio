@@ -3,14 +3,48 @@ import toast, { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import {
   Mail, MapPin, Github, Linkedin,
-  Twitter, Send, MessageSquare, Globe,
-  User, DollarSign, Clock
+  Send, MessageSquare, Globe,
+  User, DollarSign
 } from 'lucide-react';
 import MagneticButton from './ui/MagneticButton';
+
+// Framer Motion staggered orchestration variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 16
+    }
+  }
+};
 
 export default function Contact() {
   const formRef = useRef();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedProjectType, setSelectedProjectType] = useState('');
+
+  const projectTypes = [
+    { id: 'web', label: 'Web App' },
+    { id: 'mobile', label: 'Mobile App' },
+    { id: 'design', label: 'UI/UX Design' },
+    { id: 'consulting', label: 'Consulting' },
+    { id: 'other', label: 'Other' }
+  ];
 
   const sendEmail = async (e) => {
     e.preventDefault();
@@ -36,6 +70,7 @@ export default function Contact() {
         toast.dismiss(loadingToast);
         toast.success(result.message || 'Transmission successful. Data secured in MongoDB.');
         formRef.current.reset();
+        setSelectedProjectType('');
       } else {
         toast.dismiss(loadingToast);
         toast.error(result.message || 'Transmission failed. Retrying sync...');
@@ -50,7 +85,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden">
+    <div className="py-20 relative overflow-hidden">
 
       <Toaster
         toastOptions={{
@@ -63,70 +98,88 @@ export default function Contact() {
         }}
       />
 
-      {/* Dynamic Background Element */}
-      <div className="absolute bottom-[-10%] left-[10%] right-[10%] w-[500px] h-[500px]  rounded-full blur-[120px] pointer-events-none" />
+      {/* Dynamic Ambient Background Glows */}
+      <div className="absolute -bottom-48 -left-48 w-[400px] h-[400px] bg-dark-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute -top-48 -right-48 w-[400px] h-[400px] bg-dark-secondary/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         <div className="flex flex-col lg:flex-row gap-20">
 
           {/* Left Column: The Brief */}
-          <div className="lg:w-1/3">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="w-12 h-12 bg-dark-surface border border-dark-border rounded-xl flex items-center justify-center text-dark-primary mb-8"
-            >
-              <MessageSquare size={24} />
-            </motion.div>
-
-            <h2 className="text-6xl font-black font-display leading-[0.85] mb-8 tracking-tighter animated-gradient-text">
-              Ready to <br /> <span className="text-gradient">Scale?</span>
-            </h2>
-
-            <p className="text-dark-textMuted text-lg font-light leading-relaxed mb-12 border-l border-dark-primary/30 pl-8 max-w-sm">
-              Currently accepting new architectural challenges. Let's sync and build something that matters.
-            </p>
-
-            <div className="space-y-8 mb-12">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="lg:w-1/3 flex flex-col justify-between"
+          >
+            <div>
               <motion.div
-                whileHover={{ x: 10 }}
-                className="flex items-center gap-6 group"
+                variants={itemVariants}
+                className="w-12 h-12 bg-dark-surface border border-dark-border rounded-xl flex items-center justify-center text-dark-primary mb-8 shadow-[0_0_15px_rgba(99,102,241,0.1)]"
               >
-                <div className="p-4 border border-dark-border rounded-2xl text-dark-primary transition-all group-hover:border-dark-primary/50 ">
-                  <Mail size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-dark-textMuted mb-1">Direct Transmission</p>
-                  <a href="mailto:patelrudra99098@gmail.com" className="text-lg font-bold text-dark-textMain transition-colors  font-bricolage hover:text-dark-primary">
-                    patelrudra99098@gmail.com
-                  </a>
-                </div>
+                <MessageSquare size={24} />
               </motion.div>
 
-              <motion.div
-                whileHover={{ x: 10 }}
-                className="flex items-center gap-6 group"
+              <motion.h2
+                variants={itemVariants}
+                className="text-6xl font-black font-display leading-[0.85] mb-8 tracking-tighter animated-gradient-text"
               >
-                <div className="p-4 border border-dark-border rounded-2xl text-dark-primary transition-all group-hover:border-dark-primary/50">
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-dark-textMuted mb-1">Base Location</p>
-                  <p className="text-lg font-bold text-dark-textMain font-bricolage hover:text-dark-primary">Gujarat, India</p>
-                </div>
-              </motion.div>
+                Ready to <br /> <span className="text-gradient">Scale?</span>
+              </motion.h2>
+
+              <motion.p
+                variants={itemVariants}
+                className="text-dark-textMuted text-lg font-light leading-relaxed mb-12 border-l border-dark-primary/30 pl-8 max-w-sm"
+              >
+                Currently accepting new architectural challenges. Let's sync and build something that matters.
+              </motion.p>
+
+              {/* Info Cards */}
+              <div className="space-y-6 mb-12">
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex items-center gap-6 p-5 bg-dark-surface/10 backdrop-blur-md border border-dark-border/40 rounded-2xl hover:border-dark-primary/30 hover:bg-dark-surface/20 transition-all duration-500 group"
+                >
+                  <div className="p-4 bg-dark-bg/40 border border-dark-border/50 rounded-xl text-dark-primary transition-all group-hover:border-dark-primary/50 group-hover:bg-dark-primary/5">
+                    <Mail size={22} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-black text-dark-textMuted mb-1">Direct Transmission</p>
+                    <a href="mailto:patelrudra99098@gmail.com" className="text-md md:text-lg font-bold text-dark-textMain transition-colors font-bricolage hover:text-dark-primary break-all">
+                      patelrudra99098@gmail.com
+                    </a>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex items-center gap-6 p-5 bg-dark-surface/10 backdrop-blur-md border border-dark-border/40 rounded-2xl hover:border-dark-secondary/30 hover:bg-dark-surface/20 transition-all duration-500 group"
+                >
+                  <div className="p-4 bg-dark-bg/40 border border-dark-border/50 rounded-xl text-dark-secondary transition-all group-hover:border-dark-secondary/50 group-hover:bg-dark-secondary/5">
+                    <MapPin size={22} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-black text-dark-textMuted mb-1">Base Location</p>
+                    <p className="text-md md:text-lg font-bold text-dark-textMain font-bricolage group-hover:text-dark-secondary transition-colors">Gujarat, India</p>
+                  </div>
+                </motion.div>
+              </div>
             </div>
 
             {/* Social Grid */}
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.3em] font-black text-dark-textMuted mb-8">Social Infrastructure</p>
+            <motion.div variants={itemVariants} className="mt-6">
+              <p className="text-[10px] uppercase tracking-[0.3em] font-black text-dark-textMuted mb-6">Social Infrastructure</p>
               <div className="flex flex-wrap gap-4">
                 {[
-                  { icon: <Github size={20} />, url: 'https://github.com/Rudraptl16', color: 'hover:text-white' },
-                  { icon: <Linkedin size={20} />, url: 'https://www.linkedin.com/in/rudra-patel-265258313/', color: 'hover:text-[#0077B5]' },
-                  { icon: <Globe size={20} />, url: 'https://patelrudra.in', color: 'hover:text-dark-secondary' }
+                  { icon: <Github size={20} />, url: 'https://github.com/Rudraptl16', activeClass: 'hover:text-white hover:border-white/50 hover:bg-white/5 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]' },
+                  { icon: <Linkedin size={20} />, url: 'https://www.linkedin.com/in/rudra-patel-265258313/', activeClass: 'hover:text-[#0077B5] hover:border-[#0077B5]/50 hover:bg-[#0077B5]/5 hover:shadow-[0_0_20px_rgba(0,119,181,0.2)]' },
+                  { icon: <Globe size={20} />, url: 'https://patelrudra.in', activeClass: 'hover:text-dark-primary hover:border-dark-primary/50 hover:bg-dark-primary/5 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]' }
                 ].map((social, i) => (
                   <motion.a
                     key={i}
@@ -135,28 +188,51 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     whileHover={{ y: -8, scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className={`w-14 h-14 rounded-2xl  backdrop-blur-md border border-white/30 flex items-center justify-center text-dark-textMuted transition-all duration-500 hover:border-dark-primary/40 hover:bg-dark-surface hover:shadow-[0_0_20px_rgba(99,102,241,0.1)] ${social.color}`}
+                    className={`w-14 h-14 rounded-2xl backdrop-blur-md border border-dark-border/60 bg-dark-surface/5 flex items-center justify-center text-dark-textMuted transition-all duration-500 ${social.activeClass}`}
                   >
                     {social.icon}
                   </motion.a>
                 ))}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Column: The Input Lab */}
           <div className="lg:w-2/3">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-dark-surface/20 backdrop-blur-xl border border-dark-border/50 rounded-[32px] p-8 md:p-12 relative overflow-hidden"
+              viewport={{ once: true, margin: "-100px" }}
+              className="bg-dark-surface/10 backdrop-blur-xl border border-dark-border/40 rounded-[32px] p-8 md:p-12 relative overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.15)]"
             >
-              <form ref={formRef} onSubmit={sendEmail} className="space-y-10 relative z-10">
+              {/* High-Tech HUD Elements */}
+              <div className="absolute top-4 left-6 hidden md:block text-[9px] font-code text-dark-primary/30 select-none pointer-events-none tracking-widest">
+                + SYSTEM_INIT_SECURE_CHANNEL_01
+              </div>
+              <div className="absolute top-4 right-6 hidden md:flex items-center gap-4 text-[9px] font-code text-dark-textMuted/30 select-none pointer-events-none tracking-widest">
+                <span>PORT: SECURE_SYNC</span>
+                <span>//</span>
+                <span className="animate-pulse text-emerald-500/50">STATUS: ONLINE</span>
+              </div>
+              
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-dark-primary/20 rounded-tl-[32px] pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-dark-secondary/20 rounded-br-[32px] pointer-events-none" />
+
+              <motion.form
+                ref={formRef}
+                onSubmit={sendEmail}
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="space-y-10 relative z-10 pt-4"
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="space-y-3 relative group/input">
+                  
+                  {/* Name Input */}
+                  <motion.div variants={itemVariants} className="space-y-3 relative group/input">
                     <label htmlFor="user_name" className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted group-focus-within/input:text-dark-secondary transition-colors duration-500 flex items-center gap-2">
-                      <User size={12} />
+                      <User size={12} className="group-focus-within/input:animate-pulse" />
                       Mission Identity
                     </label>
                     <div className="relative">
@@ -165,16 +241,17 @@ export default function Contact() {
                         name="user_name"
                         id="user_name"
                         required
-                        className="w-full bg-dark-bg/30 border border-dark-border/50 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/30 focus:outline-none focus:border-dark-secondary/50 transition-all duration-500"
+                        className="w-full bg-dark-bg/20 border border-dark-border/40 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/25 focus:outline-none focus:border-dark-secondary/50 focus:bg-dark-bg/40 focus:shadow-[0_0_25px_rgba(124,58,237,0.06)] transition-all duration-500"
                         placeholder="Your Full Name"
                       />
-                      <div className="absolute bottom-0 left-0 w-0 h-[px] bg-dark-secondary group-focus-within/input:w-full transition-all duration-700" />
+                      <div className="absolute -bottom-2 left-0 w-0 h-[2px] bg-gradient-to-r from-dark-primary to-dark-secondary group-focus-within/input:w-full transition-all duration-500" />
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="space-y-3 relative group/input">
+                  {/* Email Input */}
+                  <motion.div variants={itemVariants} className="space-y-3 relative group/input">
                     <label htmlFor="user_email" className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted group-focus-within/input:text-dark-primary transition-colors duration-500 flex items-center gap-2">
-                      <Mail size={12} />
+                      <Mail size={12} className="group-focus-within/input:animate-pulse" />
                       Comms Frequency
                     </label>
                     <div className="relative">
@@ -183,61 +260,43 @@ export default function Contact() {
                         name="user_email"
                         id="user_email"
                         required
-                        className="w-full bg-dark-bg/30 border border-dark-border/50 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/30 focus:outline-none focus:border-dark-primary/50 transition-all duration-500"
+                        className="w-full bg-dark-bg/20 border border-dark-border/40 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/25 focus:outline-none focus:border-dark-primary/50 focus:bg-dark-bg/40 focus:shadow-[0_0_25px_rgba(0,212,255,0.06)] transition-all duration-500"
                         placeholder="email@example.com"
                       />
-                      <div className="absolute bottom-0 left-0 w-0 h-[0px] bg-dark-primary group-focus-within/input:w-full transition-all duration-700" />
+                      <div className="absolute -bottom-2 left-0 w-0 h-[2px] bg-gradient-to-r from-dark-primary to-dark-secondary group-focus-within/input:w-full transition-all duration-500" />
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
 
-                {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="space-y-3 relative group/input">
-                    <label htmlFor="budget" className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted group-focus-within/input:text-dark-secondary transition-colors duration-500 flex items-center gap-2">
-                      <DollarSign size={12} />
-                      Resource Allocation
-                    </label>
-                    <div className="relative">
-                      <select
-                        name="budget"
-                        id="budget"
-                        className="w-full bg-dark-bg/30 border border-dark-border/50 rounded-xl px-5 py-4 text-dark-textMain focus:outline-none focus:border-dark-secondary/50 transition-all duration-500 appearance-none cursor-pointer"
+                {/* Pill-Selector for Project Scope / Type - Commented exactly as selected */}
+                {/* <div className="space-y-4">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted flex items-center gap-2">
+                    <DollarSign size={12} className="text-dark-secondary" />
+                    Project Scope / Category
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {projectTypes.map((type) => (
+                      <button
+                        key={type.id}
+                        type="button"
+                        onClick={() => setSelectedProjectType(type.label)}
+                        className={`px-5 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer relative ${
+                          selectedProjectType === type.label
+                            ? 'text-dark-primary border border-dark-primary bg-dark-primary/5 shadow-[0_0_15px_rgba(0,212,255,0.15)] font-extrabold'
+                            : 'text-dark-textMuted border border-dark-border/40 bg-dark-bg/10 hover:border-dark-primary/30 hover:text-dark-textMain'
+                        }`}
                       >
-                        <option value="" className="bg-dark-surface">Select Budget Scope</option>
-                        <option value="freelance" className="bg-dark-surface">$500 - $2,000</option>
-                        <option value="project" className="bg-dark-surface">$2,000 - $5,000</option>
-                        <option value="enterprise" className="bg-dark-surface">$5,000+</option>
-                        <option value="hiring" className="bg-dark-surface">Full-time / Hiring</option>
-                      </select>
-                      <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-dark-secondary group-focus-within/input:w-full transition-all duration-700" />
-                    </div>
+                        {type.label}
+                      </button>
+                    ))}
                   </div>
+                  <input type="hidden" name="project_type" value={selectedProjectType} />
+                </div> */}
 
-                  <div className="space-y-3 relative group/input">
-                    <label htmlFor="timeline" className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted group-focus-within/input:text-dark-primary transition-colors duration-500 flex items-center gap-2">
-                      <Clock size={12} />
-                      Delivery Window
-                    </label>
-                    <div className="relative">
-                      <select
-                        name="timeline"
-                        id="timeline"
-                        className="w-full bg-dark-bg/30 border border-dark-border/50 rounded-xl px-5 py-4 text-dark-textMain focus:outline-none focus:border-dark-primary/50 transition-all duration-500 appearance-none cursor-pointer"
-                      >
-                        <option value="" className="bg-dark-surface">Select Duration</option>
-                        <option value="urgent" className="bg-dark-surface"> 2 Weeks</option>
-                        <option value="standard" className="bg-dark-surface">1 - 2 Months</option>
-                        <option value="long" className="bg-dark-surface">3+ Months</option>
-                        <option value="ongoing" className="bg-dark-surface">Ongoing Support</option>
-                      </select>
-                      <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-dark-primary group-focus-within/input:w-full transition-all duration-700" />
-                    </div>
-                  </div>
-                 </div>*/}
-
-                <div className="space-y-3 relative group/input">
+                {/* Subject Input */}
+                <motion.div variants={itemVariants} className="space-y-3 relative group/input">
                   <label htmlFor="subject" className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted group-focus-within/input:text-dark-secondary transition-colors duration-500 flex items-center gap-2">
-                    <Globe size={12} />
+                    <Globe size={12} className="group-focus-within/input:animate-pulse" />
                     Mission Objective
                   </label>
                   <div className="relative">
@@ -246,16 +305,17 @@ export default function Contact() {
                       name="subject"
                       id="subject"
                       required
-                      className="w-full bg-dark-bg/30 border border-dark-border/50 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/30 focus:outline-none focus:border-dark-secondary/50 transition-all duration-500"
+                      className="w-full bg-dark-bg/20 border border-dark-border/40 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/25 focus:outline-none focus:border-dark-secondary/50 focus:bg-dark-bg/40 focus:shadow-[0_0_25px_rgba(124,58,237,0.06)] transition-all duration-500"
                       placeholder="Project Inquiry / Job Opportunity / Hello"
                     />
-                    <div className="absolute bottom-1 left-0 w-0 h-[0px] bg-dark-secondary group-focus-within/input:w-full transition-all duration-700" />
+                    <div className="absolute -bottom-2 left-0 w-0 h-[2px] bg-gradient-to-r from-dark-primary to-dark-secondary group-focus-within/input:w-full transition-all duration-500" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="space-y-3 relative group/input">
+                {/* Message Textarea */}
+                <motion.div variants={itemVariants} className="space-y-3 relative group/input">
                   <label htmlFor="message" className="text-[10px] font-black uppercase tracking-[0.2em] text-dark-textMuted group-focus-within/input:text-dark-primary transition-colors duration-500 flex items-center gap-2">
-                    <MessageSquare size={12} />
+                    <MessageSquare size={12} className="group-focus-within/input:animate-pulse" />
                     Mission Brief
                   </label>
                   <div className="relative">
@@ -264,22 +324,27 @@ export default function Contact() {
                       id="message"
                       rows="5"
                       required
-                      className="w-full bg-dark-bg/30 border border-dark-border/50 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/30 focus:outline-none focus:border-dark-primary/50 transition-all duration-500 resize-none"
+                      className="w-full bg-dark-bg/20 border border-dark-border/40 rounded-xl px-5 py-4 text-dark-textMain placeholder:text-dark-textMuted/25 focus:outline-none focus:border-dark-primary/50 focus:bg-dark-bg/40 focus:shadow-[0_0_25px_rgba(0,212,255,0.06)] transition-all duration-500 resize-none"
                       placeholder="Describe your vision or inquiry in detail..."
                     ></textarea>
-                    <div className="absolute bottom-0 left-0 w-0 h-[0px] bg-dark-primary group-focus-within/input:w-full transition-all duration-700" />
+                    <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-dark-primary to-dark-secondary group-focus-within/input:w-full transition-all duration-500" />
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="pt-6">
+                {/* Submit Button */}
+                <motion.div variants={itemVariants} className="pt-6">
                   <MagneticButton disabled={isSubmitting} className="w-full cursor-pointer">
                     <button
                       type="submit"
-                      className={`w-full py-6 rounded-2xl font-display font-black text-[15px] leading-[0.85] tracking-tighter transition-all duration-500 relative overflow-hidden group ${isSubmitting
-                        ? 'bg-dark-surface text-dark-textMuted cursor-not-allowed border border-dark-border'
-                        : 'bg-dark-primary text-dark-bg hover:shadow-[0_0_40px_rgba(99,102,241,0.2)]'
-                        }`}
+                      className={`w-full py-6 rounded-2xl font-display font-black text-[15px] leading-[0.85] tracking-tighter transition-all duration-500 relative overflow-hidden group cursor-pointer ${
+                        isSubmitting
+                          ? 'bg-dark-surface text-dark-textMuted cursor-not-allowed border border-dark-border'
+                          : 'bg-dark-primary text-dark-bg hover:shadow-[0_0_40px_rgba(0,212,255,0.25)]'
+                      }`}
                     >
+                      {/* Sliding Shimmer Highlight */}
+                      <div className="absolute inset-0 w-1/2 h-full z-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[250%] transition-transform duration-1000 ease-out pointer-events-none" />
+
                       <div className="relative z-10 flex items-center justify-center gap-4">
                         {isSubmitting ? (
                           <span className="flex items-center gap-3">
@@ -291,44 +356,28 @@ export default function Contact() {
                         ) : (
                           <>
                             INITIALIZE CONNECTION
-                            <Send size={20} className="group-hover:translate-x-2 group-hover:-translate-y-1 transition-transform" />
+                            <Send size={18} className="group-hover:translate-x-2 group-hover:-translate-y-1 transition-transform duration-300" />
                           </>
                         )}
                       </div>
 
-                      {/* Button Hover Glow Layer */}
-                      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none" />
+                      {/* Hover Glow Layer */}
+                      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity pointer-events-none" />
                     </button>
                   </MagneticButton>
-                </div>
-              </form>
+                </motion.div>
+              </motion.form>
 
-              {/* High-Tech Decorative Elements */}
-              <div className="absolute top-0 right-0 p-4 opacity-[0.05] pointer-events-none">
-                <div className="text-[40px] font-black select-none">DATA_SYNC_04</div>
+              {/* High-Tech Decorative Label */}
+              <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none select-none">
+                <div className="text-[40px] font-black tracking-widest">DATA_SYNC_04</div>
               </div>
               <div className="absolute bottom-[-20%] left-[-10%] w-[300px] h-[300px] bg-dark-secondary/5 rounded-full blur-[80px] pointer-events-none" />
             </motion.div>
           </div>
 
         </div>
-
-        {/* Global Footer / System Status 
-        <div className="mt-32 pt-10 border-t border-dark-border/50 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-[10px] font-code text-dark-textMuted uppercase tracking-widest">Systems Online</span>
-            </div>
-            <span className="text-[10px] font-code text-dark-textMuted uppercase tracking-widest">v4.2.0 Final Build</span>
-          </div>
-          <p className="text-[10px] font-code text-dark-textMuted uppercase tracking-widest">
-            © 2026 Rudra Patel. All rights reserved. Built with precision and passion.
-          </p>
-        </div>*/}
       </div>
-    </section>
+    </div>
   );
 }
-
-
