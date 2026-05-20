@@ -7,6 +7,7 @@ import { socialLinks } from '../data/socialLinks';
 const featureLinks = [
   { name: 'HOME', to: '/' },
   { name: 'ARTIFACTS', to: '/artifacts' },
+  { name: 'CREDENTIALS', to: '/achievements' },
   { name: 'BLOG', to: '/blog' },
   { name: 'CONTACT', to: '/contact' }
 ];

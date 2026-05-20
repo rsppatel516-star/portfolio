@@ -10,7 +10,7 @@ const navLinks = [
   { name: 'ALCHEMIST', to: 'about' },
   { name: 'ARSENAL', to: 'skills' },
   { name: 'CHRONICLES', to: 'experience' },
-  { name: 'CREDENTIALS', to: 'achievements' },
+  { name: 'CREDENTIALS', to: '/achievements', type: 'route' },
   { name: 'CAPABILITIES', to: 'services' },
   { name: 'ARTIFACTS', to: 'projects' },
   { name: 'CONTACT', to: 'contact' },
@@ -66,7 +66,12 @@ const NavLink = ({ link, mobile, isHome, close, handleClick, index }) => {
     </motion.span>
   );
 
-  return isHome ? (
+  return (link.type === 'route' || link.to.startsWith('/')) ? (
+    <RouterLink to={link.to} onClick={close} className={cls}>
+      {content}
+      {mobile && <ArrowRight size={15} className="opacity-30 shrink-0" />}
+    </RouterLink>
+  ) : isHome ? (
     <ScrollLink to={link.to} spy smooth offset={-70} duration={800}
       onClick={close}
       activeClass={mobile ? '!text-white !bg-white/[0.06]' : '!text-white'}

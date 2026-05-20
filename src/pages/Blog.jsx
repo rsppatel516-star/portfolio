@@ -57,9 +57,9 @@ export default function Blog() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black tracking-tight sm:tracking-tighter leading-none"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black tracking-tight sm:tracking-tighter animated-gradient-text leading-none"
             >
-              Curated <br /> <span className="text-gradient">Knowledge</span>.
+              Curated <br /> <span className="text-gradient">Knowledge</span>
             </motion.h1>
 
             <motion.div

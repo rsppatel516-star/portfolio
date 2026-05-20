@@ -5,6 +5,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Artifacts from './pages/Artifacts';
 import CaseStudy from './pages/CaseStudy';
+import AchievementsPage from './pages/AchievementsPage';
+import ContactPage from './pages/ContactPage';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import GlobalParticles from './components/canvas/GlobalParticles';
@@ -12,7 +14,10 @@ import ClickSpark from './components/ui/ClickSpark';
 
 function App() {
   const location = useLocation();
-  const isFeaturePage = location.pathname.startsWith('/artifacts') || location.pathname.startsWith('/blog');
+  const isFeaturePage = location.pathname.startsWith('/artifacts') || 
+                        location.pathname.startsWith('/blog') || 
+                        location.pathname.startsWith('/achievements') ||
+                        location.pathname.startsWith('/contact');
 
   return (
     <div className="min-h-screen flex flex-col bg-dark-bg text-dark-textMain relative">
@@ -36,6 +41,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/artifacts" element={<Artifacts />} />
               <Route path="/artifacts/:id" element={<CaseStudy />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<BlogPost />} />
             </Routes>
