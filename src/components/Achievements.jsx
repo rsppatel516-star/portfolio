@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, ExternalLink, FileText, X, Shield, Calendar, ArrowRight, Download, ZoomIn, ZoomOut, Maximize2, Copy, Check } from 'lucide-react';
+import { Award, ExternalLink, FileText, X, Shield, Calendar, ArrowRight, Download, ZoomIn, ZoomOut, Maximize2, Copy, Check, Briefcase } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import MagneticButton from './ui/MagneticButton';
 import GridBackground from './ui/GridBackground';
@@ -138,6 +139,7 @@ const cardVariants = {
 
 // Premium Mouse-Tracking Spotlight Card Component
 const CredentialCard = ({ cert, onOpen, cardVariants }) => {
+  const navigate = useNavigate();
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
@@ -244,6 +246,21 @@ const CredentialCard = ({ cert, onOpen, cardVariants }) => {
             </a>
           )}
 
+          {cert.caseStudyId && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/artifacts/${cert.caseStudyId}`);
+              }}
+              className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 hover:border-dark-primary/30 text-dark-textMuted hover:text-white text-[10px] font-bold uppercase tracking-wider rounded-xl hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-500 group/btn font-bricolage cursor-pointer"
+              title="Explore Related Case Study"
+            >
+              <Briefcase size={12} className="text-dark-primary group-hover/btn:scale-110 transition-transform" />
+              <span className="hidden sm:inline">Explore Case Study</span>
+              <span className="sm:hidden">Case Study</span>
+            </button>
+          )}
+
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -261,6 +278,7 @@ const CredentialCard = ({ cert, onOpen, cardVariants }) => {
 };
 
 export default function Achievements() {
+  const navigate = useNavigate();
   const [selectedCert, setSelectedCert] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
   const [copiedHash, setCopiedHash] = useState(false);
@@ -571,6 +589,19 @@ export default function Achievements() {
                       <Download size={14} />
                       Download PDF
                     </a>
+                  )}
+
+                  {selectedCert.caseStudyId && (
+                    <button
+                      onClick={() => {
+                        setSelectedCert(null);
+                        navigate(`/artifacts/${selectedCert.caseStudyId}`);
+                      }}
+                      className="flex items-center gap-2 px-5 py-3 bg-white/5 border border-white/10 hover:border-dark-secondary/30 text-dark-textMuted hover:text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-300 cursor-pointer"
+                    >
+                      <Briefcase size={14} className="text-dark-secondary" />
+                      Explore Case Study
+                    </button>
                   )}
 
                   <button
