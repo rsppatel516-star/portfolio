@@ -10,7 +10,6 @@ const navLinks = [
   { name: 'ALCHEMIST', to: 'about' },
   { name: 'ARSENAL', to: 'skills' },
   { name: 'CHRONICLES', to: 'experience' },
-  { name: 'CREDENTIALS', to: '/achievements', type: 'route' },
   { name: 'CAPABILITIES', to: 'services' },
   { name: 'ARTIFACTS', to: 'projects' },
   { name: 'CONTACT', to: 'contact' },
